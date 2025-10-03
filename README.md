@@ -20,6 +20,37 @@ O script usa yt-dlp para baixar vídeos e openai-whisper para transcrição. ffm
 python3 scripts/analyze_hooks.py
 ```
 
+### Análise por IA (Vercel AI SDK / OpenAI)
+
+1. Configure a variável de ambiente com sua chave (use `.env`):
+```bash
+cp env.example .env
+# edite .env e coloque sua chave
+source .env
+```
+
+2. Instale dependências Node (uma vez):
+```bash
+npm install
+```
+
+3. Rode a análise por `id` do `data/ads.jsonl`:
+```bash
+npm run analyze -- --id br_001
+```
+
+Ou filtre pelo link do vídeo:
+```bash
+npm run analyze -- --url-contains instagram.com/reel/DNnnsPVu8rv
+```
+
+Parâmetros úteis:
+- `--model`: modelo OpenAI (padrão: `gpt-4o-mini` ou `OPENAI_MODEL`)
+- `--temperature`: temperatura (padrão: `0.2`)
+- `--file`: caminho customizado para `ads.jsonl`
+
+O resultado é impresso como JSON no terminal. No modo streaming, o JSON aparece token a token.
+
 ### Ingestão de novos anúncios
 ```bash
 python3 ingest/ingest_url.py --url "https://instagram.com/reel/VIDEO_ID/" --ugc-type review --brand "NomeMarca" --category "beleza" --terms-ok true

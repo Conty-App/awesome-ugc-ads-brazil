@@ -1,0 +1,30 @@
+{
+  "name": "awesome-ugc-ads-brazil",
+  "version": "1.0.0",
+  "description": "O **primeiro dataset aberto de anúncios UGC em português (pt-BR)** — focado em ganchos (hooks), CTAs e estrutura narrativa.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "analyze": "node scripts/analyze_by_id.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Conty-App/awesome-ugc-ads-brazil.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Conty-App/awesome-ugc-ads-brazil/issues"
+  },
+  "homepage": "https://github.com/Conty-App/awesome-ugc-ads-brazil#readme",
+  "type": "module",
+  "dependencies": {
+    "@ai-sdk/openai": "^2.0.42",
+    "ai": "^5.0.60",
+    "commander": "^14.0.1",
+    "dotenv": "^17.2.3",
+    "openai": "^6.1.0",
+    "zod": "^4.1.11"
+  }
+}
