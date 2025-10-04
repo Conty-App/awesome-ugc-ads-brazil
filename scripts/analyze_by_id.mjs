@@ -43,12 +43,9 @@ program
 
 const opts = program.opts();
 
-if (!opts.id && !opts["urlContains"]) {
-  // Commander converts --url-contains to urlContains
-  if (!opts.id && !opts.urlContains) {
-    console.error("Erro: informe --id ou --url-contains");
-    process.exit(1);
-  }
+if (!opts.id && !opts.urlContains) {
+  console.error("Erro: informe --id ou --url-contains");
+  process.exit(1);
 }
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
@@ -69,7 +66,6 @@ function readAds(filePath) {
       const ad = adSchema.parse(obj);
       out.push(ad);
     } catch (e) {
-      // skip invalid lines silently
     }
   }
   return out;

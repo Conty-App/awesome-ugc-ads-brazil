@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 import json, collections
 from pathlib import Path
-p = Path("data/ads.jsonl")
-c = collections.Counter()
+p=Path("data/ads.jsonl")
+c=collections.Counter()
 if p.exists():
     with p.open() as f:
         for line in f:
             line=line.strip()
-            if not line: 
-                continue
+            if not line: continue
             ad=json.loads(line)
             h=(ad.get("hook_text") or "").strip().lower()
             if h:

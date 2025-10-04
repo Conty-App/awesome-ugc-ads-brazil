@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-import argparse, json, os, re, shutil, tempfile
-from pathlib import Path
+import argparse, json, re, shutil, subprocess, tempfile
 from datetime import datetime
-import subprocess
-import whisper
-import yt_dlp
+from pathlib import Path
+import whisper, yt_dlp
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"/"ads.jsonl"
@@ -40,8 +38,7 @@ def next_id():
     with DATA.open() as f:
         for line in f:
             line=line.strip()
-            if not line: 
-                continue
+            if not line: continue
             try:
                 ad=json.loads(line)
             except:
@@ -79,8 +76,7 @@ def guess_cta(script):
             for x in s[::-1]:
                 if re.search(pat,x.lower()):
                     return x
-    s=sentences(script)
-    return s[-1] if s else ""
+    return sentences(script)[-1] if sentences(script) else ""
 
 def detect_platform(url):
     u=url.lower()
@@ -96,7 +92,7 @@ def detect_platform(url):
 
 def download(url,out_dir):
     ydl_opts={
-        "outtmpl": str(out_dir/ "%(id)s.%(ext)s"),
+        "outtmpl": str(out_dir/"%(id)s.%(ext)s"),
         "format": "mp4/best",
         "noplaylist": True,
         "quiet": True,
@@ -105,15 +101,9 @@ def download(url,out_dir):
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info=ydl.extract_info(url, download=True)
-    if "_filename" in info:
-        video=Path(info["_filename"])
-    else:
-        video=next(out_dir.glob(f"{info.get('id','*')}.*"), None)
-    dur=None
-    if "duration" in info and isinstance(info["duration"],(int,float)):
-        dur=int(info["duration"])
-    desc=info.get("description") or ""
-    return {"video":video,"duration":dur,"description":desc}
+    video=Path(info.get("_filename") or next(out_dir.glob(f"{info.get('id','*')}.*"), None))
+    dur=int(info["duration"]) if isinstance(info.get("duration"),(int,float)) else None
+    return {"video":video,"duration":dur,"description":info.get("description","")}
 
 def to_wav(video_path,out_dir):
     a=out_dir/(video_path.stem+".wav")
@@ -141,7 +131,6 @@ def main():
             raise SystemExit("transcricao vazia")
         hook=guess_hook(script)
         cta=guess_cta(script)
-        caption=clean(meta.get("description") or "")
         rid=next_id()
         platform=detect_platform(args.url)
         rec={
@@ -154,9 +143,9 @@ def main():
             "video_url":args.url,
             "hook_text":hook,
             "cta_text":cta,
-            "caption_text":caption or None,
+            "caption_text":clean(meta["description"]) or None,
             "script_text":script,
-            "duration_sec":meta.get("duration"),
+            "duration_sec":meta["duration"],
             "aspect_ratio":args.aspect_ratio,
             "terms_ok":terms,
             "notes":"auto-ingest via ingest_url.py "+datetime.utcnow().isoformat()+"Z"

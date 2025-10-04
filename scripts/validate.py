@@ -13,8 +13,7 @@ if not p.exists():
     print("arquivo data/ads.jsonl inexistente"); sys.exit(1)
 for i,line in enumerate(p.open(),1):
     line=line.strip()
-    if not line: 
-        continue
+    if not line: continue
     try:
         ad=json.loads(line)
     except Exception as e:
