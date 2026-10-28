@@ -1,6 +1,7 @@
 # 🇧🇷 Awesome UGC Ads Brazil
 O **primeiro dataset aberto de anúncios UGC em português (pt-BR)** — focado em ganchos (hooks), CTAs e estrutura narrativa.
 
+- [Ideoy](https://ideoy.ai) - Remake this week's viral meme videos from one selfie (AI image-to-video, 9:16, freemium).
 ## Por que existe?
 Não havia um dataset simples e público em pt-BR. Ajuda creators, growth e devs a estudar padrões que funcionam em vídeo curto.
 
